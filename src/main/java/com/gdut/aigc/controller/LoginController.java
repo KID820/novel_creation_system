@@ -19,6 +19,7 @@ public class LoginController {
     // 登录方法
     @PostMapping("/api/user/login")
     public Result login(@RequestBody Map<String, String> loginRequest) {
+        log.info("jinru");
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
         log.info("用户登录: {}", email);

@@ -1,6 +1,7 @@
 package com.gdut.aigc.service;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RememberMeStore {
@@ -19,6 +20,13 @@ public class RememberMeStore {
             return null;
         }
         return entry.userId;
+    }
+    
+    // 生成记住我令牌
+    public static String generateToken(Long userId) {
+        String token = UUID.randomUUID().toString().replace("-", "");
+        put(token, userId);
+        return token;
     }
     static class RememberEntry {
         Long userId;

@@ -1,7 +1,7 @@
 package com.gdut.aigc.POJO;
 
 import lombok.Data;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
