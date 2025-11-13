@@ -4,7 +4,7 @@
 
 ### 接口基地址
 ```
-http://localhost:8080/api
+http://localhost:8081/api
 ```
 
 ### 请求头配置
@@ -755,7 +755,7 @@ const isValid = await bcrypt.compare(inputPassword, hashedPassword)
 ## 十、前后端联调检查清单
 
 ### 10.1 接口对接检查
-- [ ] 后端接口基地址配置正确（`http://localhost:8080/api`）
+- [ ] 后端接口基地址配置正确（`http://localhost:8081/api`）
 - [ ] 所有接口返回格式符合规范（包含 code, message, data）
 - [ ] Token 生成和验证机制正常
 - [ ] CORS 跨域配置正确（开发环境）
@@ -785,7 +785,7 @@ const isValid = await bcrypt.compare(inputPassword, hashedPassword)
 ### 11.1 前端环境变量
 创建 `.env.development` 文件：
 ```bash
-VITE_API_BASE_URL=http://localhost:8080/api
+VITE_API_BASE_URL=http://localhost:8081/api
 ```
 
 创建 `.env.production` 文件：
@@ -797,7 +797,7 @@ VITE_API_BASE_URL=https://your-domain.com/api
 - 数据库连接配置
 - JWT 密钥配置
 - CORS 允许的源地址
-- 端口配置（8080）
+- 端口配置（8081）
 
 ---
 
@@ -816,4 +816,4 @@ VITE_API_BASE_URL=https://your-domain.com/api
 ---
 
 **文档版本**：v1.0  
-**最后更新**：2025-11-05
+**更新日期**：2025-11-13
