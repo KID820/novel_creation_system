@@ -2,8 +2,10 @@ package com.gdut.aigc.controller;
 
 import com.gdut.aigc.POJO.Result;
 import com.gdut.aigc.POJO.User;
+import com.gdut.aigc.service.UserService;
 import com.gdut.aigc.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -13,6 +15,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+    
+    @Autowired
+    private UserService userService;
 
     // 用户注册接口
     @PostMapping("/register")
@@ -41,14 +46,14 @@ public class UserController {
             return Result.error("密码长度应为6-20位");
         }
         
-        // 模拟注册成功
-        User user = new User();
-        user.setUserId(1L);
-        user.setNickname(nickname);
-        user.setEmail(email);
-        user.setCreatedAt(LocalDateTime.now());
-        
-        return Result.success("注册成功", user);
+        // 调用UserService进行注册
+        try {
+            User user = userService.register(nickname, email, password);
+            return Result.success("注册成功", user);
+        } catch (Exception e) {
+            log.error("注册失败", e);
+            return Result.error("注册失败：" + e.getMessage());
+        }
     }
     
     // 获取用户信息接口

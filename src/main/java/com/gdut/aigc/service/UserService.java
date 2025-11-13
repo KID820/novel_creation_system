@@ -5,6 +5,9 @@ import com.gdut.aigc.POJO.User;
 public interface UserService {
     
     // 用户注册
+    boolean register(User user);
+    
+    // 用户注册（重载方法）
     User register(String nickname, String email, String password);
     
     // 用户登录

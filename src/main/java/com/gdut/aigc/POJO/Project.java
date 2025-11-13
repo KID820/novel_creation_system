@@ -1,15 +1,10 @@
 package com.gdut.aigc.POJO;
 
 import lombok.Data;
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "projects")
 public class Project {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
     
     private Long userId;

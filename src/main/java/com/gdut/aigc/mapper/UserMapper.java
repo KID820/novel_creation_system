@@ -1,15 +1,25 @@
 package com.gdut.aigc.mapper;
 
 import com.gdut.aigc.POJO.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.*;
 
-@Repository
-public interface UserMapper extends JpaRepository<User, Long> {
+@Mapper
+public interface UserMapper {
     
-    // 根据邮箱查找用户
-    User findByEmail(String email);
+    // 登录方法
+    @Select("select * from users where email=#{email} and password=#{password}")
+    User getByEmailAndPassword(@Param("email") String email, @Param("password") String password);
     
-    // 检查邮箱是否已存在
-    boolean existsByEmail(String email);
+    // 自动登录方法
+    @Select("select * from users where user_id=#{userId}")
+    User getById(Long userId);
+    
+    // 查重方法（查邮箱）
+    @Select("select * from users where email=#{email}")
+    User getByEmail(String email);
+    
+    // 注册方法
+    @Insert("insert into users(nickname, email, password) values(#{nickname}, #{email}, #{password})")
+    @Options(useGeneratedKeys = true, keyProperty = "userId")
+    int registerUser(User user);
 }
