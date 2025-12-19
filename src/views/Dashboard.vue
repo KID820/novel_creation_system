@@ -252,11 +252,6 @@
       </div>
       <el-divider direction="vertical" />
       <div class="text-center">
-        <div class="font-mono text-gray-900 text-sm font-medium">{{ wordsPerMinute }}/m</div>
-        <div class="text-gray-500 text-xs leading-none">速度</div>
-      </div>
-      <el-divider direction="vertical" />
-      <div class="text-center">
         <div class="font-mono text-gray-900 text-sm font-medium">{{ formatDuration(writingTime) }}</div>
         <div class="text-gray-500 text-xs leading-none">时长</div>
       </div>
@@ -600,24 +595,24 @@ const content = ref(`艾莉克斯站在飞船的观察窗前，凝视着外面�
 艾莉克斯感到一阵兴奋和担忧。这可能是人类第一次接触外星文明的机会，但也可能是一个危险的陷阱。她看向主屏幕，那里显示着一个她从未见过的星系图案，信号就来自那里。`)
 
 /* ----------------- 计算 ----------------- */
+const initialWordCount = ref(0) // 记录初始字数
 const currentWords = computed(() => content.value.trim().length)
 //const projectPercent = computed(() => Math.round((project.current / project.target) * 100))
 // 修改projectPercent计算，使用ref值
 const projectPercent = computed(() => project.value.target ? Math.round((project.value.current / project.value.target) * 100) : 0)
 
-// 计算每小时字数（效率）
+// 计算每秒秒字数（效率）
 const productivity = computed(() => {
   if (writingTime.value === 0) return 0
-  const hours = writingTime.value / 3600
-  return Math.round(sessionWords.value / hours)
+  return (sessionWords.value / writingTime.value).toFixed(2)
 })
 
-// 计算平均每分钟字数
+/* // 计算平均每分钟字数
 const wordsPerMinute = computed(() => {
   if (writingTime.value === 0) return 0
   const minutes = writingTime.value / 60
   return (sessionWords.value / minutes).toFixed(1)
-})
+}) */
 
 /* ----------------- 方法 ----------------- */
 
@@ -680,7 +675,9 @@ const debouncedGetSuggestions = debounce(async () => {
 function onInput() {
   const newWordCount = content.value.trim().length
   project.value.current = newWordCount
-  sessionWords.value = Math.max(0, newWordCount - (project.value.projectId ? project.value.current : 12450))
+  //计算本次会话字数：当前总字数 - 初始字数
+  sessionWords.value = Math.max(0, newWordCount - initialWordCount.value)
+  
   
   // 更新当前章节的字数
   if (chapters.value.length > 0 && activeChapter.value < chapters.value.length) {
@@ -1040,8 +1037,11 @@ async function fetchProject() {
       current: res.current,
       status: res.status
     }
-    // 初始化sessionWords
-    sessionWords.value = Math.max(0, res.current - 12450)
+    // 初始化初始字数
+    initialWordCount.value = res.current || 0
+
+    // 初始化sessionWords为0
+    sessionWords.value = 0
     
     // 获取章节列表
     await fetchChapters()
@@ -1067,7 +1067,7 @@ async function fetchProject() {
   }
 }
 
-// 创建新项目
+// 处理创建新项目
 async function handleCreateProject() {
   try {
     if (newProjectForm.name === '测试') {
@@ -1080,6 +1080,10 @@ async function handleCreateProject() {
         current: 0,
         status: '正在编写'
       }
+
+      // 初始化初始字数
+      initialWordCount.value = res.current || 0
+      // 初始化sessionWords为0
       sessionWords.value = 0
     
       showCreateProjectDialog.value = false
@@ -1109,6 +1113,10 @@ async function handleCreateProject() {
       status: res.status
     }
     
+    // 初始化初始字数
+    initialWordCount.value = res.current || 0
+
+    // 初始化sessionWords为0
     sessionWords.value = 0
     
     showCreateProjectDialog.value = false
