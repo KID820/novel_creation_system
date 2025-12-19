@@ -177,4 +177,64 @@
       </div>
     </footer>
   </div>
+
+  
+    
+    <aside class="w-[280px] bg-white border-l border-gray-200 flex flex-col">
+      <!-- 头部 -->
+      <div class="p-4 border-b border-gray-200">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold text-gray-700">AI 助手</h2>
+          <div class="flex items-center space-x-1">
+            <div class="w-2 h-2 bg-green-500 rounded-full" />
+            <span class="text-xs text-gray-500">在线</span>
+          </div>
+        </div>
+        <el-select v-model="writingStyle" size="small" class="w-full mb-3">
+          <el-option label="科幻风格" value="sci-fi" />
+          <el-option label="悬疑风格" value="mystery" />
+          <el-option label="浪漫风格" value="romance" />
+          <el-option label="奇幻风格" value="fantasy" />
+          <el-option label="惊悚风格" value="thriller" />
+        </el-select>
+        <div class="grid grid-cols-2 gap-2">
+          <el-button type="primary" size="small" plain @click="getInspiration">灵感</el-button>
+          <el-button type="primary" size="small" plain @click="continueWriting">续写</el-button>
+        </div>
+      </div>
+
+      <!-- 建议 -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-3">
+        <div
+          v-for="(s, i) in suggestions"
+          :key="i"
+          class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-lg"
+        >
+          <div class="text-xs font-medium text-blue-700 mb-1">{{ s.type }}</div>
+          <div class="text-xs text-gray-700 mb-2">{{ s.text }}</div>
+          <el-button type="text" size="small" @click="applySuggestion(s)">应用</el-button>
+        </div>
+        <div v-if="thinking" class="text-xs text-gray-500 flex items-center">
+          <div class="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse" />
+          AI 分析中...
+        </div>
+      </div>
+
+      <!-- 快速操作 -->
+      <div class="p-4 border-t border-gray-200">
+        <h3 class="text-sm font-semibold text-gray-700 mb-2">快速操作</h3>
+        <div class="space-y-1">
+          <el-button
+            v-for="op in quickOps"
+            :key="op"
+            class="w-full justify-start"
+            text
+            size="small"
+            @click="quickOperate(op)"
+          >
+            {{ op }}
+          </el-button>
+        </div>
+      </div>
+    </aside>
 </template>
