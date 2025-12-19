@@ -247,7 +247,7 @@
       </div>
       <el-divider direction="vertical" />
       <div class="text-center">
-        <div class="font-mono text-gray-900 text-sm font-medium">{{ productivity }}/h</div>
+        <div class="font-mono text-gray-900 text-sm font-medium">{{ productivity }}字/s</div>
         <div class="text-gray-500 text-xs leading-none">效率</div>
       </div>
       <el-divider direction="vertical" />
